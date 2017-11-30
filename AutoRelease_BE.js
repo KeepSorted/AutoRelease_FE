@@ -8,13 +8,6 @@ const config = {
    * 更新命令，当push 动作发生时执行，包括git更新以及项目构建，一般不需要更改，使用shell语法
    */
   freshCmdPath : './freshAndBuild.sh',
-
-  /**
-   * 测试命令， 暂时还不需要， shell 语法
-   */
-  testCMD : [
-    "npm test"
-  ],
 }
 
 /**
@@ -52,13 +45,6 @@ app.post("/webhook",function (req, res) {
   })
 })
 
-app.get("/fresh", function (req, res) {
-  console.log("fresh");
-    rumCommand('sh', [config.freshCmdPath], txt => {
-    console.log(txt)
-  })
-});
-
 app.listen(app.get("port"), function () {
     console.log("Express server listening on port " + app.get("port"));
 });
@@ -70,10 +56,13 @@ handler.on('error', function (err) {
  
 handler.on('push', function (event) {
   console.log('Received a push event for %s to %s',event.payload.repository.name,event.payload.ref);
-  rumCommand('sh', [config.freshCmdPath], txt => {
-    console.log(txt)
-  })
-
+  // 如果收到master的更新
+  if (event.payload.ref === 'refs/heads/master') {
+    console.log("Begin to build!")
+    rumCommand('sh', [config.freshCmdPath], txt => {
+      console.log(txt)
+    })
+  }
 })
  
 handler.on('issues', function (event) {
