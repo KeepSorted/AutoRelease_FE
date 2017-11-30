@@ -51,7 +51,9 @@ app.post("/webhook",function (req, res) {
     res.end('no such location')
   })
 })
+
 app.get("/fresh", function (req, res) {
+  console.log("fresh");
     rumCommand('sh', [config.freshCmdPath], txt => {
     console.log(txt)
   })
