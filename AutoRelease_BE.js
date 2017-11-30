@@ -51,7 +51,11 @@ app.post("/webhook",function (req, res) {
     res.end('no such location')
   })
 })
-
+app.get("/fresh", function (req, res) {
+    rumCommand('sh', [config.freshCmdPath], txt => {
+    console.log(txt)
+  })
+});
 
 app.listen(app.get("port"), function () {
     console.log("Express server listening on port " + app.get("port"));
