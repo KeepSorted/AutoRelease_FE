@@ -45,6 +45,7 @@ app.get("/", function (req, res) {
 });
 // webhook 路由
 app.get("/webhook",function (req, res) {
+  console.log("connected!");
   handler(req, res, function (err) {
     res.statusCode = 404
     res.end('no such location')
